@@ -132,7 +132,7 @@
 <body>
 
     <div class="header">
-        <h1>تصميم الشقة السكنية</h1>
+        <h1>تصميم الشقة السكنية (التوزيع الأمثل)</h1>
         <p>المساحة الإجمالية التقريبية: 265 متر مربع</p>
     </div>
 
@@ -147,17 +147,22 @@
     </div>
 
     <script>
-        // هيكل البيانات (JSON) الخاص بتصميم الشقة بناءً على الرسمة
-        // الإحداثيات (x, y) والعرض والطول (w, h) تم حسابها لتتناسب مع أبعاد 1000x600
+        // التصميم المقترح (الأمثل لاستغلال المساحات)
         const apartmentData = [
-            { id: "entrance", name: "باب الشقة / المدخل", area: "-", x: 150, y: 10, w: 100, h: 40, color: "#ecf0f1" },
-            { id: "living", name: "غرفة المعيشة والاستقبال", area: 100, x: 50, y: 50, w: 300, h: 500, color: "#e3f2fd" },
-            { id: "corridor", name: "ممر التوزيع", area: "-", x: 350, y: 250, w: 600, h: 80, color: "#f5f6fa" },
-            { id: "guest_bath", name: "حمام الضيوف", area: 15, x: 400, y: 100, w: 130, h: 150, color: "#f8efba" },
-            { id: "kitchen", name: "المطبخ", area: 20, x: 530, y: 100, w: 180, h: 150, color: "#ffeaa7" },
-            { id: "main_bath", name: "الحمام الرئيسي", area: 20, x: 710, y: 100, w: 180, h: 150, color: "#f8efba" },
-            { id: "room1", name: "غرفة ١", area: 50, x: 400, y: 330, w: 245, h: 220, color: "#e8f8f5" },
-            { id: "room2", name: "غرفة ٢", area: 50, x: 645, y: 330, w: 245, h: 220, color: "#e8f8f5" }
+            { id: "entrance", name: "باب الشقة", area: "-", x: 150, y: 10, w: 100, h: 40, color: "#ecf0f1" },
+            { id: "living", name: "الاستقبال والمعيشة", area: 100, x: 50, y: 50, w: 300, h: 500, color: "#e3f2fd" },
+            { id: "corridor", name: "ممر التوزيع", area: 30, x: 350, y: 250, w: 600, h: 80, color: "#f5f6fa" },
+            
+            // الجزء العلوي من الممر
+            { id: "guest_bath", name: "حمام ضيوف", area: 5, x: 350, y: 150, w: 80, h: 100, color: "#f8efba" },
+            { id: "kitchen", name: "المطبخ", area: 20, x: 430, y: 100, w: 170, h: 150, color: "#ffeaa7" },
+            { id: "room3", name: "غرفة نوم 3 / مكتب", area: 20, x: 600, y: 100, w: 200, h: 150, color: "#e8f8f5" },
+            { id: "main_bath", name: "حمام مشترك", area: 10, x: 800, y: 100, w: 150, h: 150, color: "#f8efba" },
+            
+            // الجزء السفلي من الممر
+            { id: "room1", name: "غرفة نوم 1", area: 20, x: 350, y: 330, w: 180, h: 220, color: "#e8f8f5" },
+            { id: "room2", name: "غرفة نوم 2", area: 20, x: 530, y: 330, w: 180, h: 220, color: "#e8f8f5" },
+            { id: "master_suite", name: "جناح رئيسي (غرفة+حمام+ملابس)", area: 40, x: 710, y: 330, w: 240, h: 220, color: "#d1c4e9" }
         ];
 
         const svg = document.getElementById('floorplan');
@@ -186,7 +191,7 @@
                 textName.setAttribute("y", room.y + (room.h / 2) - 5);
                 textName.setAttribute("text-anchor", "middle");
                 textName.setAttribute("dominant-baseline", "middle");
-                textName.setAttribute("font-size", "20");
+                textName.setAttribute("font-size", "18");
                 textName.textContent = room.name;
 
                 // إضافة مساحة الغرفة
