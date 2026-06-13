@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تصميم الشقة التفاعلي - التوزيع الأمثل للمساحات</title>
+    <title>تصميم الشقة التفاعلي - 265 متر مربع</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -43,10 +43,10 @@
             font-size: 1.1rem;
         }
 
-        /* حاوية الرسم لضمان عدم التمرير واحتواء الشاشة */
+        /* حاوية الرسم لضمان عدم التمرير */
         .svg-container {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1000px; /* أقصى عرض للرسم */
             background: white;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -106,7 +106,7 @@
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             text-align: center;
-            min-width: 320px;
+            min-width: 300px;
             border-bottom: 4px solid var(--accent-color);
             transition: all 0.3s ease;
         }
@@ -132,8 +132,8 @@
 <body>
 
     <div class="header">
-        <h1>تصميم الشقة السكنية (التوزيع المقترح)</h1>
-        <p>المساحة الإجمالية: 265 متر مربع | 4 غرف نوم | 3 حمامات</p>
+        <h1>تصميم الشقة السكنية</h1>
+        <p>المساحة الإجمالية التقريبية: 265 متر مربع</p>
     </div>
 
     <div class="svg-container">
@@ -147,22 +147,26 @@
     </div>
 
     <script>
-        // هيكل البيانات (JSON) الخاص بالتصميم الجديد والأمثل
+        // هيكل البيانات (JSON) الخاص بالتصميم المقترح الأمثل لاستغلال المساحات
+        // التوزيع الجديد: 4 غرف نوم (أو 3 + مكتب)، 3 حمامات، جناح رئيسي، استقبال فخم
+        // الإحداثيات معدلة لتناسب العرض 1000x600 مع الحفاظ على التناسق البصري
         const apartmentData = [
-            { id: "entrance", name: "باب الشقة", area: "-", x: 150, y: 10, w: 100, h: 40, color: "#ecf0f1", desc: "المدخل الرئيسي" },
-            { id: "living", name: "الاستقبال والمعيشة", area: 100, x: 50, y: 50, w: 300, h: 500, color: "#e3f2fd", desc: "مساحة مفتوحة للضيوف والمعيشة" },
-            { id: "corridor", name: "ممر التوزيع", area: 30, x: 350, y: 250, w: 600, h: 80, color: "#f5f6fa", desc: "يفصل بين منطقة الاستقبال وغرف النوم" },
+            { id: "entrance", name: "باب الشقة", area: "-", x: 150, y: 10, w: 100, h: 40, color: "#ecf0f1" },
+            { id: "living", name: "الاستقبال والمعيشة", area: 100, x: 50, y: 50, w: 300, h: 500, color: "#e3f2fd" },
+            { id: "corridor", name: "ممر التوزيع", area: 30, x: 350, y: 250, w: 600, h: 80, color: "#f5f6fa" },
             
-            // الجزء العلوي من الممر
-            { id: "guest_bath", name: "حمام ضيوف", area: 5, x: 350, y: 150, w: 80, h: 100, color: "#f8efba", desc: "يخدم منطقة الاستقبال" },
-            { id: "kitchen", name: "المطبخ", area: 20, x: 430, y: 100, w: 170, h: 150, color: "#ffeaa7", desc: "مطبخ واسع" },
-            { id: "room3", name: "غرفة نوم 3 / مكتب", area: 20, x: 600, y: 100, w: 200, h: 150, color: "#e8f8f5", desc: "غرفة متعددة الاستخدامات" },
-            { id: "main_bath", name: "حمام مشترك", area: 10, x: 800, y: 100, w: 150, h: 150, color: "#f8efba", desc: "يخدم غرف النوم الفرعية" },
+            // الجزء العلوي من الممر (يمين المعيشة أعلى الممر)
+            { id: "guest_bath", name: "حمام ضيوف", area: 5, x: 350, y: 150, w: 80, h: 100, color: "#f8efba" },
+            { id: "kitchen", name: "المطبخ", area: 20, x: 430, y: 100, w: 170, h: 150, color: "#ffeaa7" },
+            { id: "room3", name: "غرفة نوم 3 / مكتب", area: 20, x: 600, y: 100, w: 200, h: 150, color: "#e8f8f5" },
+            { id: "main_bath", name: "حمام مشترك", area: 10, x: 800, y: 100, w: 150, h: 150, color: "#f8efba" },
             
-            // الجزء السفلي من الممر
-            { id: "room1", name: "غرفة نوم 1", area: 20, x: 350, y: 330, w: 180, h: 220, color: "#e8f8f5", desc: "غرفة نوم للأطفال أو الضيوف" },
-            { id: "room2", name: "غرفة نوم 2", area: 20, x: 530, y: 330, w: 180, h: 220, color: "#e8f8f5", desc: "غرفة نوم للأطفال أو الضيوف" },
-            { id: "master_suite", name: "جناح رئيسي", area: 40, x: 710, y: 330, w: 240, h: 220, color: "#d1c4e9", desc: "غرفة نوم + حمام خاص + غرفة ملابس" }
+            // الجزء السفلي من الممر (أسفل الممر)
+            { id: "room1", name: "غرفة نوم 1", area: 20, x: 350, y: 330, w: 180, h: 220, color: "#e8f8f5" },
+            { id: "room2", name: "غرفة نوم 2", area: 20, x: 530, y: 330, w: 180, h: 220, color: "#e8f8f5" },
+            // الجناح الرئيسي مع لون مميز (بنفسجي هادئ) لإبراز القيمة
+            { id: "master_suite", name: "جناح رئيسي (غرفة+حمام+ملابس)", area: 40, 
+              x: 710, y: 330, w: 240, h: 220, color: "#d1c4e9" }
         ];
 
         const svg = document.getElementById('floorplan');
@@ -174,6 +178,8 @@
                 // إنشاء مجموعة (Group) لكل غرفة
                 const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
                 group.classList.add("room");
+                group.setAttribute("data-name", room.name);
+                group.setAttribute("data-area", room.area);
 
                 // رسم المستطيل (الغرفة)
                 const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -189,7 +195,7 @@
                 textName.setAttribute("y", room.y + (room.h / 2) - 5);
                 textName.setAttribute("text-anchor", "middle");
                 textName.setAttribute("dominant-baseline", "middle");
-                textName.setAttribute("font-size", "18");
+                textName.setAttribute("font-size", "20");
                 textName.textContent = room.name;
 
                 // إضافة مساحة الغرفة
@@ -211,7 +217,6 @@
                 group.addEventListener('mouseenter', () => {
                     infoPanel.innerHTML = `
                         <h2>${room.name}</h2>
-                        <p style="font-size:1rem; margin-bottom:5px;">${room.desc}</p>
                         <p>المساحة: <span class="highlight">${room.area !== "-" ? room.area + ' م²' : 'غير محددة'}</span></p>
                     `;
                 });
@@ -224,16 +229,9 @@
                 });
             });
 
-            // رسم خطوط الأبواب لتبدو أكثر واقعية
-            drawDoor(170, 50, 60, "horizontal");  // باب الشقة
-            drawDoor(350, 270, 40, "vertical");   // مدخل الممر من المعيشة
-            drawDoor(390, 250, 30, "horizontal"); // باب حمام الضيوف
-            drawDoor(500, 250, 40, "horizontal"); // باب المطبخ
-            drawDoor(680, 250, 40, "horizontal"); // باب غرفة 3
-            drawDoor(850, 250, 40, "horizontal"); // باب الحمام المشترك
-            drawDoor(420, 330, 40, "horizontal"); // باب غرفة 1
-            drawDoor(600, 330, 40, "horizontal"); // باب غرفة 2
-            drawDoor(800, 330, 40, "horizontal"); // باب الجناح الرئيسي
+            // رسم خطوط الأبواب (تجميلي)
+            drawDoor(170, 50, 60, "horizontal"); // باب الشقة
+            drawDoor(350, 270, 40, "vertical"); // مدخل الممر من المعيشة
         }
 
         // دالة مساعدة لرسم فتحات الأبواب
@@ -248,7 +246,7 @@
                 door.setAttribute("width", 8);
                 door.setAttribute("height", size);
             }
-            door.setAttribute("fill", "white"); // لون الباب أبيض ليعطي إيحاء بالفتحة
+            door.setAttribute("fill", "white");
             svg.appendChild(door);
         }
 
