@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مخطط الشقة التفاعلي | 265 متر مربع</title>
+    <!-- استدعاء خط عربي عصري وواضح -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1e293b; /* لون خلفية الموقع */
+            --wall-color: #334155; /* لون الجدران */
+            --door-color: #ef4444; /* لون الأبواب */
+            --text-color: #1e293b;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden; /* لمنع التمرير يميناً ويساراً */
+        }
+
+        .header {
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        /* حاوية المخطط */
+        #plan-container {
+            width: 95vw;
+            height: 85vh;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* إعدادات الـ SVG */
+        svg {
+            width: 100%;
+            height: 100%;
+            max-height: 100%;
+        }
+
+        .room {
+            stroke: var(--wall-color);
+            stroke-width: 4;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .room:hover {
+            filter: brightness(0.9);
+            stroke-width: 6;
+        }
+
+        .room-text {
+            font-weight: 700;
+            font-size: 22px;
+            fill: var(--text-color);
+            pointer-events: none; /* لمنع تداخل النص مع تأثير الماوس */
+        }
+
+        .area-text {
+            font-weight: 400;
+            font-size: 16px;
+            fill: #475569;
+            pointer-events: none;
+        }
+
+        .door {
+            fill: white;
+            stroke: var(--door-color);
+            stroke-width: 3;
+        }
+        
+        .main-door-label {
+            font-weight: 700;
+            font-size: 18px;
+            fill: var(--door-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>تصميم الشقة المقترح (265 م²)</h1>
+    </div>
+
+    <div id="plan-container">
+        <!-- سيتم رسم الـ SVG هنا بواسطة الجافاسكربت -->
+    </div>
+
+    <script>
+        // هيكل البيانات باستخدام JSON لتسهيل التعديل
+        // الأبعاد والمسافات محسوبة رياضياً لتتناسب مع مساحات الرسمة اليدوية
+        const apartmentData = {
+            "rooms": [
+                { "id": "living", "name": "غرفة المعيشة", "area": "100 متر", "x": 50, "y": 50, "w": 350, "h": 500, "color": "#e0f2fe" },
+                { "id": "hallway", "name": "ممر", "area": "", "x": 400, "y": 250, "w": 500, "h": 80, "color": "#f8fafc" },
+                { "id": "guest_bath", "name": "حمام الضيوف", "area": "15 متر", "x": 400, "y": 150, "w": 120, "h": 100, "color": "#ffedd5" },
+                { "id": "kitchen", "name": "المطبخ", "area": "30 متر", "x": 520, "y": 150, "w": 230, "h": 100, "color": "#fef9c3" },
+                { "id": "main_bath", "name": "الحمام الرئيسي", "area": "20 متر", "x": 750, "y": 150, "w": 150, "h": 100, "color": "#ffedd5" },
+                { "id": "room1", "name": "غرفة 1", "area": "50 متر", "x": 400, "y": 330, "w": 250, "h": 220, "color": "#dcfce7" },
+                { "id": "room2", "name": "غرفة 2", "area": "50 متر", "x": 650, "y": 330, "w": 250, "h": 220, "color": "#dcfce7" }
+            ],
+            "doors": [
+                { "type": "main", "x": 200, "y": 45, "w": 60, "h": 10 }, // باب الشقة
+                { "type": "internal", "x": 440, "y": 245, "w": 40, "h": 10 }, // باب حمام الضيوف
+                { "type": "internal", "x": 600, "y": 245, "w": 50, "h": 10 }, // باب المطبخ
+                { "type": "internal", "x": 800, "y": 245, "w": 40, "h": 10 }, // باب الحمام الرئيسي
+                { "type": "internal", "x": 500, "y": 325, "w": 50, "h": 10 }, // باب غرفة 1
+                { "type": "internal", "x": 750, "y": 325, "w": 50, "h": 10 }  // باب غرفة 2
+            ]
+        };
+
+        const svgNS = "http://www.w3.org/2000/svg";
+        const container = document.getElementById('plan-container');
+        
+        // إنشاء عنصر SVG
+        const svg = document.createElementNS(svgNS, "svg");
+        // استخدام viewBox لضمان التجاوب مع جميع الشاشات بدون سكرول
+        svg.setAttribute("viewBox", "0 0 950 600");
+        
+        // 1. رسم الغرف
+        apartmentData.rooms.forEach(room => {
+            const g = document.createElementNS(svgNS, "g");
+            
+            // المستطيل (الغرفة)
+            const rect = document.createElementNS(svgNS, "rect");
+            rect.setAttribute("x", room.x);
+            rect.setAttribute("y", room.y);
+            rect.setAttribute("width", room.w);
+            rect.setAttribute("height", room.h);
+            rect.setAttribute("fill", room.color);
+            rect.setAttribute("class", "room");
+            g.appendChild(rect);
+
+            // اسم الغرفة
+            const textName = document.createElementNS(svgNS, "text");
+            textName.setAttribute("x", room.x + (room.w / 2));
+            textName.setAttribute("y", room.y + (room.h / 2) - (room.area ? 10 : 0));
+            textName.setAttribute("text-anchor", "middle");
+            textName.setAttribute("dominant-baseline", "middle");
+            textName.setAttribute("class", "room-text");
+            textName.textContent = room.name;
+            g.appendChild(textName);
+
+            // مساحة الغرفة
+            if (room.area) {
+                const textArea = document.createElementNS(svgNS, "text");
+                textArea.setAttribute("x", room.x + (room.w / 2));
+                textArea.setAttribute("y", room.y + (room.h / 2) + 20);
+                textArea.setAttribute("text-anchor", "middle");
+                textArea.setAttribute("dominant-baseline", "middle");
+                textArea.setAttribute("class", "area-text");
+                textArea.textContent = room.area;
+                g.appendChild(textArea);
+            }
+
+            svg.appendChild(g);
+        });
+
+        // 2. إزالة الجدار بين المعيشة والممر (لجعلها مفتوحة كما في الرسم)
+        const openWall = document.createElementNS(svgNS, "line");
+        openWall.setAttribute("x1", 400);
+        openWall.setAttribute("y1", 254);
+        openWall.setAttribute("x2", 400);
+        openWall.setAttribute("y2", 326);
+        openWall.setAttribute("stroke", "#f8fafc"); // نفس لون الممر
+        openWall.setAttribute("stroke-width", "6");
+        svg.appendChild(openWall);
+
+        // 3. رسم الأبواب
+        apartmentData.doors.forEach(door => {
+            const dRect = document.createElementNS(svgNS, "rect");
+            dRect.setAttribute("x", door.x);
+            dRect.setAttribute("y", door.y);
+            dRect.setAttribute("width", door.w);
+            dRect.setAttribute("height", door.h);
+            dRect.setAttribute("class", "door");
+            svg.appendChild(dRect);
+
+            // إضافة تسمية لباب الشقة
+            if(door.type === "main") {
+                const doorText = document.createElementNS(svgNS, "text");
+                doorText.setAttribute("x", door.x + (door.w / 2));
+                doorText.setAttribute("y", door.y - 15);
+                doorText.setAttribute("text-anchor", "middle");
+                doorText.setAttribute("class", "main-door-label");
+                doorText.textContent = "باب الشقة";
+                svg.appendChild(doorText);
+            }
+        });
+
+        container.appendChild(svg);
+    </script>
+</body>
+</html>
